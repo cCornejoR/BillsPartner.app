@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: '',
+  basePath: '/BillsPartner.app',
+  assetPrefix: '/BillsPartner.app/',
   eslint: {
     ignoreDuringBuilds: true,
   },

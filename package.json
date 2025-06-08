@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -H 0.0.0.0 --turbopack",
     "build": "next build",
+    "build:github": "next build && touch out/.nojekyll",
     "build:ios": "next build && npx cap sync ios",
     "start": "next start",
     "lint": "npx biome lint --write && npx tsc --noEmit",

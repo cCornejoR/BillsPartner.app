@@ -109,8 +109,27 @@ capacitor.config.ts        # Configuración de Capacitor
 ```bash
 npm run dev          # Desarrollo web
 npm run build        # Construir para producción
+npm run build:github # Construir para GitHub Pages
 npm run start        # Servir versión de producción
 npm run lint         # Ejecutar linter
+```
+
+## 🌐 GitHub Pages
+
+Esta aplicación está configurada para desplegarse automáticamente en GitHub Pages. 
+
+**URL de la aplicación**: https://ccornejor.github.io/BillsPartner.app/
+
+### Configuración automática:
+- ✅ Build automático con GitHub Actions
+- ✅ Despliegue a GitHub Pages
+- ✅ Configuración de basePath para subdirectorios
+- ✅ Optimizaciones para sitios estáticos
+
+### Despliegue manual:
+```bash
+npm run build:github
+# Los archivos se generan en la carpeta 'out'
 ```
 
 ## 📄 Licencia
