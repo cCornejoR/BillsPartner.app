@@ -6,30 +6,36 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Plus,
   ArrowUpRight,
+  ArrowDownLeft,
   Heart,
   Eye,
   EyeOff,
   TrendingUp,
   TrendingDown,
   Wallet,
-  PiggyBank,
-  Target
+  Target,
+  PieChart,
+  Home,
+  Settings,
+  PiggyBank
 } from "lucide-react";
 import { CreditCardComponent } from "@/components/CreditCardComponent";
 import { ExpenseTracker } from "@/components/ExpenseTracker";
 import { AddExpenseModal } from "@/components/AddExpenseModal";
+import { SavingsGoalsManager } from "@/components/SavingsGoalsManager";
+import { BudgetManager } from "@/components/BudgetManager";
+import { AccountsManager } from "@/components/AccountsManager";
 import { formatCurrency } from "@/lib/utils";
 import { useFinancialData } from "@/hooks/useFinancialData";
 
 export function DashboardContent() {
   const { financialData, isLoading } = useFinancialData();
   const [showBalance, setShowBalance] = useState(true);
-  const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
-
-  if (isLoading) {
+  const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);  if (isLoading) {
     return (
       <div className="space-y-6 animate-fade-in">
         <div className="flex items-center justify-center h-40">
@@ -38,9 +44,21 @@ export function DashboardContent() {
       </div>
     );
   }
-
-  const vacationProgress = (financialData.savingsGoal.vacations.current / financialData.savingsGoal.vacations.target) * 100;
-  const foodProgress = (financialData.savingsGoal.food.current / financialData.savingsGoal.food.target) * 100;
+  // Get first vacation and food goals for dashboard display
+  const vacationGoal = financialData.savingsGoals?.find(goal => 
+    goal.category === 'Viajes' || 
+    goal.category === 'Vacation' || 
+    goal.name.toLowerCase().includes('vacacion')
+  );
+  
+  const foodGoal = financialData.savingsGoals?.find(goal => 
+    goal.category === 'Comida' || 
+    goal.category === 'Food' || 
+    goal.name.toLowerCase().includes('comida')
+  );
+  
+  const vacationProgress = vacationGoal ? (vacationGoal.current / vacationGoal.target) * 100 : 0;
+  const foodProgress = foodGoal ? (foodGoal.current / foodGoal.target) * 100 : 0;
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -127,10 +145,10 @@ export function DashboardContent() {
             <Plus className="w-7 h-7" />
             <span className="text-sm font-medium">Agregar Gasto</span>
           </div>
-        </Button>
-        <Button 
+        </Button>        <Button 
           variant="outline" 
           className="h-auto p-6 glass-card border-2 border-blue-200 hover:border-blue-300 transform transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg"
+          onClick={() => setShowAddExpenseModal(true)}
         >
           <div className="flex flex-col items-center space-y-2">
             <ArrowUpRight className="w-7 h-7 text-blue-600" />
@@ -158,9 +176,8 @@ export function DashboardContent() {
                 {Math.round(vacationProgress)}%
               </Badge>
             </div>
-            <Progress value={vacationProgress} className="h-3 mb-2" />
-            <p className="text-xs text-gray-500">
-              {formatCurrency(financialData.savingsGoal.vacations.current)} de {formatCurrency(financialData.savingsGoal.vacations.target)}
+            <Progress value={vacationProgress} className="h-3 mb-2" />            <p className="text-xs text-gray-500">
+              {vacationGoal ? formatCurrency(vacationGoal.current) : formatCurrency(0)} de {vacationGoal ? formatCurrency(vacationGoal.target) : formatCurrency(0)}
             </p>
           </div>
 
@@ -174,9 +191,8 @@ export function DashboardContent() {
                 {Math.round(foodProgress)}%
               </Badge>
             </div>
-            <Progress value={foodProgress} className="h-3 mb-2" />
-            <p className="text-xs text-gray-500">
-              {formatCurrency(financialData.savingsGoal.food.current)} de {formatCurrency(financialData.savingsGoal.food.target)}
+            <Progress value={foodProgress} className="h-3 mb-2" />            <p className="text-xs text-gray-500">
+              {foodGoal ? formatCurrency(foodGoal.current) : formatCurrency(0)} de {foodGoal ? formatCurrency(foodGoal.target) : formatCurrency(0)}
             </p>
           </div>
         </CardContent>

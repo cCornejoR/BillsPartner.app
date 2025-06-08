@@ -313,6 +313,97 @@ export function useFinancialData() {
     saveFinancialData(updatedFinancialData);
   };
 
+  // Actualizar gasto existente
+  const updateExpense = (id: string, updatedExpense: Omit<Expense, "id" | "timestamp">) => {
+    const expenseIndex = expenses.findIndex(expense => expense.id === id);
+    if (expenseIndex === -1) return;
+
+    const originalExpense = expenses[expenseIndex];
+    const updatedExpenses = [...expenses];
+    updatedExpenses[expenseIndex] = {
+      ...originalExpense,
+      ...updatedExpense
+    };
+
+    saveExpenses(updatedExpenses);
+
+    // Recalcular balance y gastos mensuales
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    
+    // Calcular gastos del mes actual
+    const monthlyExpenses = updatedExpenses
+      .filter(exp => {
+        const expDate = new Date(exp.timestamp);
+        return expDate.getMonth() === currentMonth && 
+               expDate.getFullYear() === currentYear &&
+               exp.amount < 0;
+      })
+      .reduce((sum, exp) => sum + Math.abs(exp.amount), 0);
+
+    // Calcular ingresos del mes actual
+    const monthlyIncome = updatedExpenses
+      .filter(exp => {
+        const expDate = new Date(exp.timestamp);
+        return expDate.getMonth() === currentMonth && 
+               expDate.getFullYear() === currentYear &&
+               exp.amount > 0;
+      })
+      .reduce((sum, exp) => sum + exp.amount, 0);
+
+    // Calcular nuevo balance total
+    const totalBalance = updatedExpenses.reduce((sum, exp) => sum + exp.amount, INITIAL_DATA.balance);
+
+    const updatedFinancialData = {
+      ...financialData,
+      balance: totalBalance,
+      monthlyExpenses,
+      monthlyIncome
+    };
+    saveFinancialData(updatedFinancialData);
+  };
+
+  // Eliminar gasto
+  const deleteExpense = (id: string) => {
+    const updatedExpenses = expenses.filter(expense => expense.id !== id);
+    saveExpenses(updatedExpenses);
+
+    // Recalcular balance y gastos mensuales
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    
+    // Calcular gastos del mes actual
+    const monthlyExpenses = updatedExpenses
+      .filter(exp => {
+        const expDate = new Date(exp.timestamp);
+        return expDate.getMonth() === currentMonth && 
+               expDate.getFullYear() === currentYear &&
+               exp.amount < 0;
+      })
+      .reduce((sum, exp) => sum + Math.abs(exp.amount), 0);
+
+    // Calcular ingresos del mes actual
+    const monthlyIncome = updatedExpenses
+      .filter(exp => {
+        const expDate = new Date(exp.timestamp);
+        return expDate.getMonth() === currentMonth && 
+               expDate.getFullYear() === currentYear &&
+               exp.amount > 0;
+      })
+      .reduce((sum, exp) => sum + exp.amount, 0);
+
+    // Calcular nuevo balance total
+    const totalBalance = updatedExpenses.reduce((sum, exp) => sum + exp.amount, INITIAL_DATA.balance);
+
+    const updatedFinancialData = {
+      ...financialData,
+      balance: totalBalance,
+      monthlyExpenses,
+      monthlyIncome
+    };
+    saveFinancialData(updatedFinancialData);
+  };
+
   // Obtener gastos recientes (últimos 5)
   const getRecentExpenses = () => {
     return expenses
@@ -351,6 +442,8 @@ export function useFinancialData() {
     addRecurringTransaction,
     updateBudget,
     updateAccounts,
+    updateExpense,
+    deleteExpense,
     getRecentExpenses,
     getMonthlyExpensesByCategory
   };
