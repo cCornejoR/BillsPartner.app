@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MobileNavigation } from "@/components/MobileNavigation";
+import { AuthWrapper } from "@/components/AuthWrapper";
 import Dashboard from "./page";
 import { ExpenseTracker } from "@/components/ExpenseTracker";
 import { CreditCardComponent } from "@/components/CreditCardComponent";
@@ -51,13 +52,12 @@ export default function ClientWrapper() {
         return <Dashboard />;
     }
   };
-
   return (
-    <>
+    <AuthWrapper>
       <main className="pb-20 pt-6 px-4 max-w-md mx-auto">
         {renderContent()}
       </main>
       <MobileNavigation activeTab={activeTab} onTabChange={setActiveTab} />
-    </>
+    </AuthWrapper>
   );
 }

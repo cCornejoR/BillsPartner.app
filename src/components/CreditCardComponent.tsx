@@ -4,17 +4,23 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { CreditCard, Wifi } from "lucide-react";
+import { CreditCard, Wifi, Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { formatCurrency } from "@/lib/utils";
+import { useFinancialData } from "@/hooks/useFinancialData";
 
 export function CreditCardComponent() {
   const [mounted, setMounted] = useState(false);
+  const [showBalance, setShowBalance] = useState(true);
+  const { financialData } = useFinancialData();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
   const cardData = {
-    balance: 3420,
-    limit: 5000,
+    balance: Math.max(0, financialData.balance * 0.3), // 30% del balance como límite usado
+    limit: 8000, // Límite fijo en soles
     number: "**** **** **** 2847",
     holder: "KELY & CRHISTIAN",
     expiry: "12/28",
@@ -22,10 +28,6 @@ export function CreditCardComponent() {
 
   const spendingPercentage = (cardData.balance / cardData.limit) * 100;
   const remainingLimit = cardData.limit - cardData.balance;
-
-  const formatCurrency = (amount: number) => {
-    return `${amount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
-  };
 
   return (
     <div className="space-y-4">
@@ -88,12 +90,12 @@ export function CreditCardComponent() {
             >
               {spendingPercentage.toFixed(0)}% usado
             </Badge>
-          </div>
-
-          <div className="space-y-3">
+          </div>          <div className="space-y-3">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Gastado</span>
-              <span className="font-medium">$3,420</span>
+              <span className="font-medium">
+                {showBalance ? formatCurrency(cardData.balance) : "S/ ****"}
+              </span>
             </div>
 
             <Progress
@@ -104,10 +106,37 @@ export function CreditCardComponent() {
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Disponible</span>
               <span className="font-medium text-green-600">
-                $1,580
+                {showBalance ? formatCurrency(remainingLimit) : "S/ ****"}
+              </span>
+            </div>
+
+            <div className="flex justify-between text-sm pt-2 border-t">
+              <span className="text-gray-600">Límite Total</span>
+              <span className="font-medium">
+                {showBalance ? formatCurrency(cardData.limit) : "S/ ****"}
               </span>
             </div>
           </div>
+
+          {/* Toggle Balance Visibility */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowBalance(!showBalance)}
+            className="mt-3 w-full text-xs"
+          >
+            {showBalance ? (
+              <>
+                <EyeOff className="w-4 h-4 mr-1" />
+                Ocultar montos
+              </>
+            ) : (
+              <>
+                <Eye className="w-4 h-4 mr-1" />
+                Mostrar montos
+              </>
+            )}
+          </Button>
 
           {/* Warning message */}
           {spendingPercentage > 80 && (
