@@ -1,24 +1,139 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💰 Gastos.app
 
-## Getting Started
+Una aplicación móvil moderna para el seguimiento de gastos personales y financieros, construida con Next.js y Capacitor.
 
-First, run the development server:
+## ✨ Características
 
+- 📱 **Aplicación móvil nativa** para iOS y Android
+- 💳 **Seguimiento de gastos** con categorización automática
+- 📊 **Gráficos y análisis** de tus patrones de gasto
+- 🎯 **Metas financieras** para controlar tu presupuesto
+- 🛒 **Planes de compras** para organizar tus compras futuras
+- 📄 **Exportación a PDF** de reportes financieros
+- 🔔 **Sistema de notificaciones** para recordatorios
+- 🌙 **Modo oscuro** y diseño responsive
+
+## 🚀 Tecnologías
+
+- **Frontend**: Next.js 15 con TypeScript
+- **UI**: Tailwind CSS + shadcn/ui
+- **Mobile**: Capacitor para iOS/Android
+- **Charts**: Recharts para visualización de datos
+- **PDF**: jsPDF para exportación de reportes
+
+## 📋 Prerrequisitos
+
+- Node.js 18+ 
+- npm o yarn
+- Xcode (para iOS)
+- Android Studio (para Android)
+
+## 🛠️ Instalación
+
+1. **Clonar el repositorio**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/TU_USUARIO/Gastos.app.git
+cd Gastos.app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Instalar dependencias**
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Ejecutar en desarrollo web**
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. **Construir para móvil**
+```bash
+# Construir la aplicación
+npm run build
+
+# Sincronizar con Capacitor
+npx cap sync
+
+# Abrir en iOS (requiere macOS y Xcode)
+npx cap open ios
+
+# Abrir en Android
+npx cap open android
+```
+
+## 📱 Desarrollo móvil
+
+### iOS
+1. Asegúrate de tener Xcode instalado
+2. Ejecuta `npx cap open ios`
+3. Selecciona tu dispositivo o simulador en Xcode
+4. Presiona el botón de Play para compilar y ejecutar
+
+### Android
+1. Asegúrate de tener Android Studio instalado
+2. Ejecuta `npx cap open android`
+3. Selecciona tu dispositivo o emulador en Android Studio
+4. Presiona el botón de Run para compilar y ejecutar
+
+## 📁 Estructura del proyecto
+
+```
+src/
+├── app/                    # Páginas de Next.js (App Router)
+├── components/            # Componentes React
+│   ├── ui/               # Componentes de UI base (shadcn/ui)
+│   ├── ExpenseTracker.tsx # Componente principal
+│   ├── AddExpenseModal.tsx # Modal para agregar gastos
+│   ├── EspenseCharts.tsx  # Gráficos y análisis
+│   ├── FinancialGoals.tsx # Metas financieras
+│   └── ...
+└── lib/                   # Utilidades y configuraciones
+
+ios/                       # Proyecto nativo de iOS
+capacitor.config.ts        # Configuración de Capacitor
+```
+
+## 🎨 Componentes principales
+
+- **ExpenseTracker**: Componente principal para seguimiento de gastos
+- **AddExpenseModal**: Modal para agregar nuevos gastos
+- **EspenseCharts**: Visualización de datos con gráficos
+- **FinancialGoals**: Gestión de metas financieras
+- **CreditCardComponent**: Simulación de tarjeta de crédito
+- **ShoppingPlans**: Planificación de compras
+- **PDFExport**: Exportación de reportes
+- **NotificationSystem**: Sistema de notificaciones
+
+## 🚀 Scripts disponibles
+
+```bash
+npm run dev          # Desarrollo web
+npm run build        # Construir para producción
+npm run start        # Servir versión de producción
+npm run lint         # Ejecutar linter
+```
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+## 🤝 Contribuir
+
+Las contribuciones son bienvenidas. Por favor:
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/nueva-caracteristica`)
+3. Commit tus cambios (`git commit -m 'Agregar nueva característica'`)
+4. Push a la rama (`git push origin feature/nueva-caracteristica`)
+5. Abre un Pull Request
+
+## 📧 Contacto
+
+Si tienes preguntas o sugerencias, no dudes en abrir un issue en GitHub.
+
+---
+
+Desarrollado con ❤️ para el control de gastos personales
 
 ## Learn More
 
